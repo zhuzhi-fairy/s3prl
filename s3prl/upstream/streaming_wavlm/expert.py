@@ -62,6 +62,10 @@ class UpstreamExpert(nn.Module):
         super().__init__()
         self.name = "[Streaming WavLM]"
 
+        # S3PRL passes some kwargs that we should ignore
+        s3prl_kwargs = {"refresh", "legacy"}
+        filtered_kwargs = {k: v for k, v in kwargs.items() if k not in s3prl_kwargs}
+
         # Default model configuration
         default_kwargs = {
             "num_layers": 12,
@@ -80,8 +84,8 @@ class UpstreamExpert(nn.Module):
             wavlm_kwargs = config_to_wavlm_kwargs(cfg)
             default_kwargs.update(wavlm_kwargs)
 
-        # Override with any kwargs passed directly
-        default_kwargs.update(kwargs)
+        # Override with any kwargs passed directly (filtered)
+        default_kwargs.update(filtered_kwargs)
 
         # Ensure causal mode for streaming
         default_kwargs.setdefault("causal", True)

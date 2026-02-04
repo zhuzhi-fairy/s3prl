@@ -42,6 +42,13 @@ class StreamingState:
 class StreamingWavLM(nn.Module):
     """Lightweight wrapper around focalcodec's streaming WavLM."""
 
+    # Known kwargs that focalcodec.wavlm.WavLM accepts
+    _WAVLM_KWARGS = {
+        "num_layers", "dim", "num_heads", "dropout", "causal",
+        "lookahead_size", "window_size", "conv_dim", "conv_kernel",
+        "conv_stride", "conv_layers", "pos_conv_kernel", "pos_conv_groups",
+    }
+
     def __init__(
         self,
         num_layers: int = 12,
@@ -67,9 +74,11 @@ class StreamingWavLM(nn.Module):
             window_size: Attention window size.
             checkpoint: Optional path to a PyTorch state_dict to load.
             device, dtype: Placement for the model weights.
-            **kwargs: Forwarded to `focalcodec.wavlm.WavLM`.
+            **kwargs: Additional arguments (unknown kwargs are ignored).
         """
         super().__init__()
+        # Filter kwargs to only include those accepted by focalcodec.wavlm.WavLM
+        wavlm_kwargs = {k: v for k, v in kwargs.items() if k in self._WAVLM_KWARGS}
         self.model = focal_wavlm.WavLM(
             num_layers=num_layers,
             dim=dim,
@@ -78,7 +87,7 @@ class StreamingWavLM(nn.Module):
             causal=causal,
             lookahead_size=lookahead_size,
             window_size=window_size,
-            **kwargs,
+            **wavlm_kwargs,
         )
         if checkpoint:
             state = self._load_checkpoint(checkpoint)

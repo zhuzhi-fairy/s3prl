@@ -22,9 +22,10 @@ Usage:
 from .expert import UpstreamExpert as _UpstreamExpert
 
 # Chunk sizes in samples at 16kHz
-CHUNK_SIZE_200MS = 3200    # 200ms * 16 samples/ms
-CHUNK_SIZE_400MS = 6400    # 400ms * 16 samples/ms
-CHUNK_SIZE_800MS = 12800   # 800ms * 16 samples/ms
+CHUNK_SIZE_200MS = 3200  # 200ms * 16 samples/ms
+CHUNK_SIZE_400MS = 6400  # 400ms * 16 samples/ms
+CHUNK_SIZE_600MS = 9600  # 600ms * 16 samples/ms
+CHUNK_SIZE_800MS = 12800  # 800ms * 16 samples/ms
 CHUNK_SIZE_1000MS = 16000  # 1000ms * 16 samples/ms
 
 
@@ -91,6 +92,28 @@ def streaming_wavlm_400ms(*args, **kwargs):
             -k checkpoint.pt -d asr -n exp1
     """
     kwargs["chunk_size"] = CHUNK_SIZE_400MS
+    return _UpstreamExpert(*args, **kwargs)
+
+
+def streaming_wavlm_600ms(*args, **kwargs):
+    """Streaming WavLM with 600ms chunks (balanced).
+
+    Uses 600ms (9600 samples) chunks for streaming inference.
+    Good balance between latency and quality.
+
+    Args:
+        ckpt: Path to checkpoint file with pretrained weights (-k option)
+        model_config: Path to YAML config file (-g option)
+        **kwargs: Additional arguments passed to UpstreamExpert
+
+    Returns:
+        UpstreamExpert instance configured for 600ms streaming.
+
+    Example:
+        python3 run_downstream.py -m train -u streaming_wavlm_600ms \\
+            -k checkpoint.pt -d asr -n exp1
+    """
+    kwargs["chunk_size"] = CHUNK_SIZE_600MS
     return _UpstreamExpert(*args, **kwargs)
 
 

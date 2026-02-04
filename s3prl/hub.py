@@ -7,8 +7,8 @@ from s3prl.upstream.byol_a.hubconf import *
 from s3prl.upstream.byol_s.hubconf import *
 from s3prl.upstream.cpc.hubconf import *
 from s3prl.upstream.data2vec.hubconf import *
-from s3prl.upstream.decoar2.hubconf import *
 from s3prl.upstream.decoar.hubconf import *
+from s3prl.upstream.decoar2.hubconf import *
 from s3prl.upstream.decoar_layers.hubconf import *
 from s3prl.upstream.distiller.hubconf import *
 from s3prl.upstream.espnet_hubert.hubconf import *
@@ -27,13 +27,14 @@ from s3prl.upstream.pase.hubconf import *
 from s3prl.upstream.passt.hubconf import *
 from s3prl.upstream.roberta.hubconf import *
 from s3prl.upstream.ssast.hubconf import *
+from s3prl.upstream.streaming_wavlm.hubconf import *
 from s3prl.upstream.tera.hubconf import *
 from s3prl.upstream.unispeech_sat.hubconf import *
 from s3prl.upstream.vggish.hubconf import *
 from s3prl.upstream.vq_apc.hubconf import *
 from s3prl.upstream.vq_wav2vec.hubconf import *
-from s3prl.upstream.wav2vec2.hubconf import *
 from s3prl.upstream.wav2vec.hubconf import *
+from s3prl.upstream.wav2vec2.hubconf import *
 from s3prl.upstream.wavlm.hubconf import *
 
 
