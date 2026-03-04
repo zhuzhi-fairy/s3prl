@@ -11,6 +11,7 @@ Example:
 """
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -65,8 +66,15 @@ def load_predictions(run_dir: Path):
         y_true: List of ground truth labels
         y_pred: List of predicted labels
     """
-    truth_file = run_dir / "test_truth.txt"
-    pred_file = run_dir / "test_predict.txt"
+    for file in os.listdir(run_dir):
+        if file.endswith("truth.txt") and file.startswith("test"):
+            print(f"Found truth file: {file}")
+            truth_file = run_dir / file
+        if file.endswith("predict.txt") and file.startswith("test"):
+            print(f"Found prediction file: {file}")
+            pred_file = run_dir / file
+    # truth_file = run_dir / "test_truth.txt"
+    # pred_file = run_dir / "test_predict.txt"
 
     if not truth_file.exists():
         raise FileNotFoundError(f"Truth file not found: {truth_file}")
@@ -235,7 +243,9 @@ def plot_confusion_matrix(y_true, y_pred, output_path: Path) -> None:
 
     # Plot confusion matrix (without colorbar)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
-    disp.plot(ax=ax, cmap="Blues", values_format="d", xticks_rotation=45, colorbar=False)
+    disp.plot(
+        ax=ax, cmap="Blues", values_format="d", xticks_rotation=45, colorbar=False
+    )
 
     # Title with accuracy
     run_name = output_path.parent.name
